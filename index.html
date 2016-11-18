@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>alert</title>
+	<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="alert.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+	(function() {
+		alert('循环显示', 1000, 'err');
+		var i = 0;
+		setInterval(function() {
+			alert("循环显示"+ i, 1000, 'ok');
+			i++;
+		}, 5000)
+	})()
+	</script>
+</body>
+</html>
