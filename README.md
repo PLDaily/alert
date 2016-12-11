@@ -2,17 +2,20 @@
 
 ### 调用示例
 ```javascript
-<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="alert.js"></script>
-<script type="text/javascript">
+<button id="ok">成功</button>
+	<button id="err">失败</button>
+	<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="alert.js"></script>
+	<script type="text/javascript">
 	(function() {
-		alert('循环显示', 1000, 'err');
-		var i = 0;
-		setInterval(function() {
-			alert("循环显示"+ i, 1000, 'ok');
-			i++;
-		}, 5000)
+		$('#ok').click(function() {
+			alert("成功", 1000, 'ok');
+		});
+		$('#err').click(function() {
+			alert("失败", 1000, 'err');
+		})
 	})()
+	</script>
 </script>
 ```
 
@@ -23,5 +26,5 @@
 | :-----: | :----: | :--: | :--: | :----------------------------------: |:----------------------------------: |
 | str | string |  否   | "登录失败"  | alert显示的字符串 | 空 |
 | time | number |  否   | 2000  | alert显示的时间 | 2000|
-| type  | string |  否   | "ok"  | 显示成功(绿色)失败(蓝色)的alert弹框  | 蓝色 |
+| type  | string |  否   | "ok"  | 显示成功(绿色)失败(蓝色)的alert弹框  | 绿色 |
 

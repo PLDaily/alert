@@ -3,18 +3,21 @@
 <head>
 	<meta charset="UTF-8">
 	<title>alert</title>
-	<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="alert.js"></script>
+	
 </head>
 <body>
+	<button id="ok">成功</button>
+	<button id="err">失败</button>
+	<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="alert.js"></script>
 	<script type="text/javascript">
 	(function() {
-		alert('循环显示', 1000, 'err');
-		var i = 0;
-		setInterval(function() {
-			alert("循环显示"+ i, 1000, 'ok');
-			i++;
-		}, 5000)
+		$('#ok').click(function() {
+			alert("成功", 1000, 'ok');
+		});
+		$('#err').click(function() {
+			alert("失败", 1000, 'err');
+		})
 	})()
 	</script>
 </body>
