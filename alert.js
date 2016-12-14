@@ -4,7 +4,21 @@
 * @param time: alert显示时间 	    类型: number			
 * @param type: alert的类型			类型: string		
 */
-;(function(window, undefined) {
+;(function(factory) {
+	var alert = factory();
+	if(typeof define === 'function' && define.amd) {
+		//AMD
+		define(['alert'], function() {
+			return alert;
+		});
+	} else if( typeof exports === 'object') {
+		//Node.js
+		module.exports = alert;
+	}else {
+		//普通
+		window.alert = alert;
+	}
+})(function() {
 
 	var alertObj = {
 		"_is_load": false,
@@ -58,8 +72,7 @@
 		}
 	}
 
-
-	window.alert = function(str, time, type) {//window.alert定义全局变量兼容IE8
+	var alert = function(str, time, type) {
 		var params = $.extend({
 			"str": "",
 			"time": 2000,
@@ -71,4 +84,7 @@
 		})
 		alertObj.showAlertBox(params);
 	}
-})(window);
+
+	return alert;
+
+});
