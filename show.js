@@ -5,22 +5,22 @@
 * @param type: alert的类型			类型: string		
 */
 ;(function(factory) {
-	var alert = factory();
+	var show = factory();
 	if(typeof define === 'function' && define.amd) {
 		//AMD
-		define(['alert'], function() {
-			return alert;
+		define(['show'], function() {
+			return show;
 		});
 	} else if( typeof exports === 'object') {
 		//Node.js
-		module.exports = alert;
+		module.exports = show;
 	}else {
 		//普通
-		window.alert = alert;
+		window.show = show;
 	}
 })(function() {
 
-	var alertObj = {
+	var showObj = {
 		"_is_load": false,
 		"_timer": null,
 		"showAlertBox": function(params) {
@@ -72,7 +72,7 @@
 		}
 	}
 
-	var alert = function(str, time, type) {
+	var show = function(str, time, type) {
 		var params = $.extend({
 			"str": "",
 			"time": 2000,
@@ -82,9 +82,9 @@
 			"time": time,
 			"type": type
 		})
-		alertObj.showAlertBox(params);
+		showObj.showAlertBox(params);
 	}
 
-	return alert;
+	return show;
 
 });

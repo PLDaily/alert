@@ -9,14 +9,14 @@
 	<button id="ok">成功</button>
 	<button id="err">失败</button>
 	<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="alert.js"></script>
+	<script type="text/javascript" src="show.js"></script>
 	<script type="text/javascript">
 	(function() {
 		$('#ok').click(function() {
-			alert("成功", 1000, 'ok');
+			show("成功", 1000, 'ok');
 		});
 		$('#err').click(function() {
-			alert("失败", 1000, 'err');
+			show("失败", 1000, 'err');
 		})
 	})()
 	</script>
