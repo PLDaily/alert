@@ -20,28 +20,90 @@
 	}
 })(function() {
 
+	var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
+
+	
+	var hasOwnProperty = ObjProto.hasOwnProperty;
+
+  
+	var nativeKeys = Object.keys;
+
+	var isObject = function(obj) {
+		return typeof obj === 'object' && !!obj
+	}
+
+	var getKeys = function(obj) {
+		if(!isObject(obj)) return [];
+		if(nativeKeys) return nativeKeys(obj);
+		var keys = [];
+		for(var key in obj) {
+			if(hasOwnProperty.call(obj, key)) {
+				keys.push(key);
+			} 
+		}
+		return keys;
+	}
+
+	var extend = function(obj) {
+		var length = arguments.length;
+		if(length < 2 && obj == null) return obj;
+		for(var i = 1; i < arguments.length; i++) {
+			var source = arguments[i],
+				keys = getKeys(source),
+				l = keys.length;
+			for(var j = 0; j < l; j++) {
+				var key = keys[j];
+				obj[key] = source[key];
+			}
+		}
+		return obj;
+	}
+
+	var trim = function (str) {
+	    return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+	}
+
+	var getWindowWidth = function() {
+		if(document.compatMode == "BackCompat") {
+		     return document.body.clientWidth;
+		}else {
+		     return document.documentElement.clientWidth;
+		}
+	}
+
 	var showObj = {
 		"_is_load": false,
 		"_timer": null,
 		"showAlertBox": function(params) {
 			if(!this._is_load) {
-				var style = [];
-				style.push('top: 0');
-				style.push('left:0');
-				style.push('z-index:9999999999');
-				style.push('padding:5px 10px');
-				style.push('min-width:300px');
-				style.push('height:40px');
-				style.push('line-height:30px');
-				style.push('border-radius:0 0 4px 4px');
-				style.push('font-size:16px');
-				style.push('color:#FFF');
-				style.push('box-sizing:border-box');
-				style.push('position:fixed');
-				style.push('text-align:center');
+				var styleArr = [];
+				styleArr.push('top: 0');
+				styleArr.push('left:0');
+				styleArr.push('zIndex:9999999999');
+				styleArr.push('padding:5px 10px');
+				styleArr.push('minWidth:300px');
+				styleArr.push('height:40px');
+				styleArr.push('lineHeight:30px');
+				styleArr.push('borderRadius:0 0 4px 4px');
+				styleArr.push('fontSize:16px');
+				styleArr.push('color:#FFF');
+				styleArr.push('boxSizing:border-box');
+				styleArr.push('position:fixed');
+				styleArr.push('textAlign:center');
 
-				this.$obj = $('<div style="'+style.join(';')+'"></div>');
-				$('body').append(this.$obj);
+				var temp = document.createDocumentFragment();
+				this.oDiv = document.createElement('div');
+				for(var i = 0, l = styleArr.length; i < l; i++) {
+					var key = trim(styleArr[i].split(':')[0]);
+					var value = trim(styleArr[i].split(':')[1]);
+					this.oDiv.style[key] = value;
+				}
+				temp.appendChild(this.oDiv);
+				if(document.compatMode == "BackCompat") {
+				    document.body.appendChild(temp);
+				}else {
+				    document.documentElement.appendChild(temp);
+				}
 				this._is_load = true;
 				this.doEvent(params);
 			}else {
@@ -54,26 +116,35 @@
 				clearTimeout(this.timer);
 			} 
 
-			this.$obj.html(params.str).css({
-				'left': parseInt(($(window).width()/2) - (this.$obj.width()/2)),
-				'background': params.type == 'ok' ? '#dff0d8' : '#bcdff1',
-				'border': params.type == 'ok' ? '#d0e9c6' : '#bcdff1',
-				'color': params.type == 'ok' ? '#3c763d' : '#31708f'
-			}).fadeIn(500).hover(function() {
+			this.oDiv.style.display = 'block';
+			this.oDiv.innerHTML = params.str;
+
+			var left = getWindowWidth()/2 - this.oDiv.offsetWidth/2;
+			var background = params.type == 'ok' ? '#dff0d8' : '#bcdff1';
+			var border = params.type == 'ok' ? '#d0e9c6' : '#bcdff1';
+			var color = params.type == 'ok' ? '#3c763d' : '#31708f';
+
+			this.oDiv.style.left = left + 'px';
+			this.oDiv.style.background = background;
+			this.oDiv.style.border = border;
+			this.oDiv.style.color = color;
+
+			this.oDiv.onmouseover = function() {
 				clearTimeout(_this.timer);
-			}, function(){
+			}
+			this.oDiv.onmouseout = function(){
 				_this.timer = setTimeout(function() {
-					_this.$obj.fadeOut(500);
+					_this.oDiv.style.display = 'none';
 				}, params.time ? params.time:2000);
-			});
+			}
 			this.timer = setTimeout(function(){
-				_this.$obj.fadeOut(500);
+				_this.oDiv.style.display = 'none';
 			}, params.time ? params.time:2000);
 		}
 	}
 
 	var show = function(str, time, type) {
-		var params = $.extend({
+		var params = extend({
 			"str": "",
 			"time": 2000,
 			"type": "ok"
